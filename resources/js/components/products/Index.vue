@@ -1,11 +1,27 @@
 <script setup>
+import { ref, oMounted } from "vue"
+
  import { useRouter } from "vue-router"
 
  const router = useRouter()
 
+ let products = ref([])
+
+ onMounted(async () => {
+    getProducts()
+ })
+
   const newProduct = () => {
     router.push('/products/create')
   }
+
+  const getProducts = async () => {
+    let response = await axios.get('/api/products')
+    .then((response) => {
+        products.value = response.data.products
+    })
+  }
+
 </script>
 
 <template>
