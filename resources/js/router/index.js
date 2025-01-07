@@ -1,12 +1,18 @@
 import {createRouter, createWebHistory} from 'vue-router';
 
 import productIndex from '../components/products/Index.vue';
+import notFound from '../components/notFound.vue';
 
 const routes = [
     {
         path:'/', 
         name:'products.index',
         component:productIndex
+    },
+    {
+        path:'/:pathMatch(.*)*',
+        name:'not-found',
+        component:notFound
     }
 ]
 
