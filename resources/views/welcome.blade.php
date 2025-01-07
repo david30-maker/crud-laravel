@@ -21,6 +21,8 @@
         @endif
     </head>
     <body>
-        <div id="app"></div>
+        <main class="container">
+          <div id="app"></div>
+        </main>
     </body>
 </html>
