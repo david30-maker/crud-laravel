@@ -11,9 +11,13 @@
   })
 
   const getImage = () => {
-    let image = "/upload/IMG_2264.jpg"
+    let image = "/upload/no_IMG_2264.jpg"
     if (form.image){
-      if()
+      if(form.image.indexOf("base64") != -1){
+        image = form.image
+      }else{
+        image = "/upload/" + form.image 
+      }
     }
     return image
   }
@@ -85,14 +89,14 @@
                          <!-- Product unit -->
                          <div class="my-3">
                              <p>Product type</p>
-                             <input type="text" class="input" >
+                             <input type="text" class="input" v-model="form.type" >
                          </div>
                          <hr>
 
                          <!-- Product invrntory -->
                          <div class="my-3">
                              <p>Inventory</p>
-                             <input type="text" class="input" >
+                             <input type="text" class="input" v.model="form.quantity">
                          </div>
                          <hr>
 
