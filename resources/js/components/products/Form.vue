@@ -43,10 +43,9 @@ const handleSave = () => {
       toast.fire({ icon: "success", title: "Item Added Successfully" });
     })
     .catch((error) => {
-        if(error.response.status === 422){
-            errors.value = error.response.data.errors
-        }
-    })
+      console.error("Error saving product:", error.response ? error.response.data : error);
+      alert("An error occurred while saving the product. Please try again.");
+    });
 };
 
 </script>

@@ -4,10 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Image;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
+
+    public function index()
+    {
+        $products = Product::query();
+        $products = $products->lastest()->get();
+
+        return response()->json(['products' => $products], 200);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
