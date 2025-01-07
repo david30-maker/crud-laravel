@@ -49,7 +49,7 @@
               Category
             </p>
             <p class="table--items--col3">
-                10
+              Inventory
             </p>     
             <div>     
                 <button class="btn-icon btn-icon-success" >

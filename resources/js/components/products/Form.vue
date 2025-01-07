@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from "vue"
+import { reactive, ref } from "vue"
 import { useRouter } from "vue-router" // Import useRouter
 
 const form = reactive({
@@ -12,6 +12,8 @@ const form = reactive({
 })
 
 const router = useRouter()
+
+let errors = ref([])
 
 const getImage = () => {
   let image = "/upload/no_IMG_2264.jpg"
@@ -34,15 +36,18 @@ const handleFileChange = (e) => {
   reader.readAsDataURL(file)
 }
 
-const handleSave = async () => {
-  try {
-    const response = await axios.post('/api/products', form)
-    router.push('/')
-  } catch (error) {
-    console.error("Error saving product:", error)
-    alert("An error occurred while saving the product. Please try again.")
-  }
-}
+const handleSave = () => {
+  axios.post('/api/products', form)
+    .then((response) => {
+      router.push('/');
+      toast.fire({ icon: "success", title: "Item Added Successfully" });
+    })
+    .catch((error) => {
+        if(error.response.status === 422){
+            errors.value = error.response.data.errors
+        }
+    })
+};
 
 </script>
 
@@ -67,10 +72,12 @@ const handleSave = async () => {
                      <div class="products__create__main--addInfo card py-2 px-2 bg-white">
                          <p class="mb-1">Name</p>
                          <input type="text" v-model="form.name" class="input" >
+                         <small style="color:red" v-if="errors.name">{{errors.name}}</small>
 
                          <p class="my-1">Description (optional)</p>
                          <textarea cols="10" rows="5" v-model="form.description" class="textarea" ></textarea>
-                         
+                         <small style="color:red" v-if="errors.description">{{errors.description}}</small>
+
                          <div class="products__create__main--media--images mt-2">
                             <ul class="products__create__main--media--images--list list-unstyled">
                                 <li class="products__create__main--media--images--item">

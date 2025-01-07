@@ -10,6 +10,12 @@ class ProductController extends Controller
 {
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required'
+        ]);
+
+
        $product = new Product();
 
          $product->name = $request->name;
@@ -19,7 +25,7 @@ class ProductController extends Controller
             $sub = substr($request->image, 0, $strpos);
             $ex = explode('/', $sub)[1];
             $name = time().".".$ex;
-            $img = Image::make($request->image)->resize(200, 200);
+            $img = Image::make($request->image)->resize(50, 50);
             $upload_path = public_path()."/upload/";
             $img->save($upload_path.$name);
             $product->image = $name;
