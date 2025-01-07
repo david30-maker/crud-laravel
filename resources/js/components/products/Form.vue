@@ -96,14 +96,14 @@
                          <!-- Product invrntory -->
                          <div class="my-3">
                              <p>Inventory</p>
-                             <input type="text" class="input" v.model="form.quantity">
+                             <input type="text" class="input" v-model="form.quantity">
                          </div>
                          <hr>
 
                          <!-- Product Price -->
                          <div class="my-3">
                              <p>Price</p>
-                             <input type="text" class="input" >
+                             <input type="text" class="input" v-model="form.price">
                          </div>
                      </div>
 
