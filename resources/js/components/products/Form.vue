@@ -1,39 +1,49 @@
 <script setup>
-  import { reactive } from "vue"
+import { reactive } from "vue"
+import { useRouter } from "vue-router" // Import useRouter
 
-  const form = reactive({
-    name: "",
-    description: "",
-    image: "",
-    type: "",
-    quantity: "",
-    price: ""
-  })
+const form = reactive({
+  name: "",
+  description: "",
+  image: "",
+  type: "",
+  quantity: "",
+  price: ""
+})
 
-  const getImage = () => {
-    let image = "/upload/no_IMG_2264.jpg"
-    if (form.image){
-      if(form.image.indexOf("base64") != -1){
-        image = form.image
-      }else{
-        image = "/upload/" + form.image 
-      }
+const router = useRouter()
+
+const getImage = () => {
+  let image = "/upload/no_IMG_2264.jpg"
+  if (form.image) {
+    if (form.image.indexOf("base64") !== -1) {
+      image = form.image
+    } else {
+      image = "/upload/" + form.image
     }
-    return image
   }
+  return image
+}
 
-  const handleFileChange = (e) => {
-    let file = e.target.files[0]
-    let reader = new FileReader()
-    reader.onloadend =(file) => {
-      form.image = reader.result
-    }
-    reader.readAsDataURL(file)
+const handleFileChange = (e) => {
+  let file = e.target.files[0]
+  let reader = new FileReader()
+  reader.onloadend = () => {
+    form.image = reader.result
   }
+  reader.readAsDataURL(file)
+}
 
-  const handleSave = () => {
-    axios.post('/api/products', form) 
+const handleSave = async () => {
+  try {
+    const response = await axios.post('/api/products', form)
+    router.push('/')
+  } catch (error) {
+    console.error("Error saving product:", error)
+    alert("An error occurred while saving the product. Please try again.")
   }
+}
+
 </script>
 
 <template>
