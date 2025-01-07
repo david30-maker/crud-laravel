@@ -1,3 +1,13 @@
+<script setup>
+ import { useRouter } from "vue-router"
+
+ const router = useRouter()
+
+  const newProduct = () => {
+    router.push('/products/create')
+  }
+</script>
+
 <template>
    <div class="container">
       
@@ -7,7 +17,7 @@
                 <h1 class="my-1">Items</h1>
             </div>
             <div class="customers__titlebar--item">
-                <button class="btn btn-secondary my-1" >
+                <button @click="newProduct"class="btn btn-secondary my-1" >
                     Add Item
                 </button>
             </div>
