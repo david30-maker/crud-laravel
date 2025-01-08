@@ -12,7 +12,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::query();
-        $products = $products->lastest()->get();
+        $products = $products->latest()->get();
 
         return response()->json(['products' => $products], 200);
     }
@@ -21,29 +21,31 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'description' => 'required'
+            'description' => 'required',
         ]);
-
-
-       $product = new Product();
-
-         $product->name = $request->name;
+    
+        $product = new Product();
+        $product->name = $request->name;
         $product->description = $request->description;
-        if($request->image !=""){
-            $strpos = strpos($request->image, ';');
-            $sub = substr($request->image, 0, $strpos);
-            $ex = explode('/', $sub)[1];
-            $name = time().".".$ex;
-            $img = Image::make($request->image)->resize(50, 50);
-            $upload_path = public_path()."/upload/";
-            $img->save($upload_path.$name);
-            $product->image = $name;
-        }else{
-            $product->image = 'default.png';
-        }
         $product->type = $request->type;
         $product->quantity = $request->quantity;
         $product->price = $request->price;
+    
+        if ($request->has('image') && $request->image != "") {
+            // Handle image upload
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('upload'), $imageName);
+            $product->image = $imageName;
+        } else {
+            $product->image = 'default.png';
+        }
+    
         $product->save();
-    }
+    
+        return response()->json([
+            'message' => 'Product created successfully!',
+            'product' => $product
+        ], 201);
+    }    
 }
